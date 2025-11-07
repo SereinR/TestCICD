@@ -3,7 +3,7 @@ on: [push, pull_request]
 permissions: {contents: read, statuses: write}
 
 jobs:
-  l:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -11,7 +11,8 @@ jobs:
         with: {distribution: temurin, java-version: '17'}
       - run: |
           curl -sSLo gjf.jar https://github.com/google/google-java-format/releases/download/v1.22.0/google-java-format-1.22.0-all-deps.jar
-          FILES="$(git ls-files '*.java' || true)"; [ -n "$FILES" ] && java -jar gjf.jar --replace $FILES || true
+          FILES="$(git ls-files '*.java' || true)"
+          [ -n "$FILES" ] && java -jar gjf.jar --replace $FILES || true
       - uses: github/super-linter@v6
         env:
           DEFAULT_BRANCH: main
